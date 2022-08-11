@@ -1,0 +1,74 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.admin.Course.Episode.IndexModel
+@{
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست قسمت ها</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <a href="/Admin/course/Episode/CreateEpisode/@ViewData["CourseId"]" style="margin: 10px" class="btn btn-success">افزودن قسمت جدبد</a>
+                <div class="table-responsive">
+                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th>عنوان قسمت</th>
+                                    <th>زمان</th>
+                                    <th>رایگان؟</th>
+                                    <th>نام قسمت</th>
+                                    <th>دستورات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var episode in Model.CourseEpisodes)
+                                {
+                                    <tr>
+                                        <td>@episode.EpisodeTitle</td>
+                                        <td>@episode.EpisodeTime</td>
+                                        <td>
+                                            @if (episode.IsFree)
+                                            {
+                                                <span class="text-success">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                </span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @episode.EpisodeFileName
+                                        </td>
+                                      
+                                        <td>
+                                            <a href="/Admin/course/episode/editepisode/@episode.EpisodeId" class="btn btn-sm btn-success">ویرایش</a>
+                                            <a href="/Admin/course/episode/deleteEpisode/@episode.EpisodeId" class="btn btn-sm btn-danger">حذف</a>
+
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

@@ -1,0 +1,70 @@
+﻿@using TopLearn.core.DTOs.Course
+
+@{
+    ViewData["Title"] = "خانه";
+}
+
+@section SearchBox
+{
+    <header>
+        <a href="" class="logo"><img src="/images/logo.png"></a>
+        <h1> با اساتید مجرب و کارآزموده در خودآموز تاپ لرن </h1>
+        <h2> آموزش ببینید ، تجربه کسب کنید و بازار کار شوید </h2>
+        <h3> با کمترین هزینه خودت یاد بگیر </h3>
+    </header>
+    <div class="search-form">
+        <form action="/course" method="get" name="filter">
+            <input type="text" name="filter" id="autofilter" placeholder="چی دوست داری یاد بگیری ؟">
+            <button><i class="zmdi zmdi-search"></i></button>
+        </form>
+    </div>
+}
+<main id="home-page">
+    <div class="container">
+        <section class="terms-items">
+            <header>
+                <h2> آخرین دوره های تاپ لرن </h2>
+                <a href=""> مشاهده همه دوره ها </a>
+            </header>
+            <div class="row">
+                <!-- col -->
+                <cache expires-after="TimeSpan.FromMinutes(5)">
+                    @await Component.InvokeAsync("LatestCourseComponents")
+                </cache>
+                <!-- /col -->
+            
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="terms-items">
+            <header>
+                <h2> دوره های محبوب تاپ لرن </h2>
+                <a href=""> مشاهده همه دوره ها </a>
+            </header>
+            <div class="row">
+              @{
+                  List<ShowCourseListItemViewModel> PopulerCourse = ViewBag.PopulerCourse as List<ShowCourseListItemViewModel>;
+              }
+              
+              @foreach (var item in PopulerCourse)
+              {
+                  <partial name="_BoxCourse" model="@item"/>
+              }
+            </div>
+        </section>
+    </div>
+</main>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#autofilter").autocomplete({
+                source:
+                    'api/courseapi/search'
+            });
+        })
+    </script>
+}

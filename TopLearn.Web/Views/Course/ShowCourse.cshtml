@@ -1,0 +1,271 @@
+﻿@using Microsoft.Extensions.DependencyInjection
+@using TopLearn.core.Convertor
+@using TopLearn.Core.Convertors
+@using TopLearn.core.Services.Intefaces
+@using TopLearn.Datalayar.Entities.Course
+@model TopLearn.Datalayar.Entities.Course.Course
+
+@section MetaTags
+{
+    <meta name=googlebot content=index,follow>
+    <meta name=robots content=noodp,noydir>
+    <meta name=description content="شرح صفحه">
+    
+    <meta property=og:site_name value="خودآموزش تاپ لرن">
+    <meta property=og:title content="@Model.CourseTitle">
+    <meta property=og:url content="https://toplearn.com/ShowCourse/@Model.CourseTitle"/>
+    <meta property=og:image content="/course/image/@Model.ImageName"> 
+    <meta property=og:image:url content="/course/image/@Model.ImageName"/>
+    <meta property=og:image:width content="700">
+
+    <meta property=og:image:type content="image/jpg">
+    <meta property=og:description content="">
+    <meta property=og:price:currency content="IRR">
+    <meta property=og:locale content="ir_FA">
+}
+
+@inject IOrderService _orderService
+@{
+    ViewData["Title"] = Model.CourseTitle;
+
+    bool UserBuyCourse = false;
+
+    if (User.Identity.IsAuthenticated)
+    {
+         UserBuyCourse = _orderService.IsUserBuyCourse(User.Identity.Name, Model.CourseId);
+    }
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"> تاپ لرن </a></li>
+            <li class="breadcrumb-item active"><a href="#"> دوره ها </a></li>
+            <li class="breadcrumb-item active" aria-current="page"> @Model.CourseTitle </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container">
+    <section class="term-content">
+        <header><h1> @Model.CourseTitle </h1></header>
+        <div class="row">
+
+            <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
+                <section class="term-description">
+                    <img src="/course/image/@Model.ImageName">
+
+                    @Html.Raw(Model.CourseDescription)
+                    
+                    <br/>
+                    
+                  @if (!string.IsNullOrEmpty(Model.DemoFileName))
+                  {
+                      <video style="width: 100%" controls autoplay >
+                          <source src="/course/demos/@Model.DemoFileName"/>
+                      </video>
+                  }
+                    <div id="vote"></div>
+    
+                    <h2> سرفصل های این دوره : </h2>
+                    
+                    @if (ViewBag.Episode != null)
+                    {
+                        CourseEpisode episode = ViewBag.Episode as CourseEpisode;
+
+                        <h2>@episode.EpisodeTitle</h2>
+
+                        <video style="width: 100%" controls autoplay >
+                            <source src="/course/CourseFileOnline/@ViewBag.FilePath"/>
+                        </video>
+                    }
+
+                    <ul>
+                        @foreach (var item in Model.CourseEpisodes)
+                        {
+                            <li>
+                            @if (item.IsFree || UserBuyCourse)
+                            {
+                                <h3>  <a href="/Download/@item.EpisodeId">
+                                @item.EpisodeTitle </a>
+                                </h3>
+                                
+                             }
+                            else
+                            {
+                            <h3> @item.EpisodeTitle </h3>
+                            }|
+                            
+                            @if (item.IsFree)
+                            {
+                                <i> رایگان </i>
+                            }
+                            else
+                            {
+                                <i> نقدی </i>
+                            }|
+                                @if (UserBuyCourse || item.IsFree)
+                                {
+                                    <a href="/showcourse/@Model.CourseId?episodeId=@item.EpisodeId">تماشا</a>
+                                }
+                            <span>@item.EpisodeTime</span>
+                           
+                            </li>
+                            
+                        }
+                        </ul>
+                </section>
+
+                <section class="user-comments">
+                    <header><h3> نظرات کاربران </h3></header>
+                    <div class="inner">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-action="Addcomment" asp-controller="Course"
+                                  data-ajax="true"
+                                  data-ajax-method="post"
+                                  data-ajax-update="#listComment"
+                                  data-ajax-success="success"
+
+                            >
+                                <div class="row">
+                            
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="comment_comment" name="comment.comment" placeholder="متن نظر"></textarea>
+                                        </div>
+                                        <input type="hidden" value="@Model.CourseId" name="comment.courseId"/>
+                                 
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <button type="submit" class="btn btn-success"> ثبت دیدگاه </button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                جهت درج نطر باید وارد سایت شوید
+                            </div>
+                        }
+                        <div class="comment-list" id="listComment">
+                        
+                            <!-- row -->
+                       
+                            <!-- /row -->
+
+                          
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="col-md-4 col-sm-12 col-xs-12 pull-right">
+                <div class="statistics">
+                    <ul>
+                        <li>
+                            <span> مدت دوره </span>
+
+                            @{
+                                TimeSpan time = new TimeSpan(Model.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks));
+                            }
+                            <i> @time </i>
+                        </li>
+                        <li>
+                            <span> تعداد ویدیوها </span>
+                            <i> @Model.CourseEpisodes.Count </i>
+                        </li>
+                        <li>
+                            <span> تعداد دانشجوها </span>
+                            <i>@Model.UserCourses.Count </i>
+                        </li>
+                    </ul>
+
+                    @if (Model.CoursePrice != 0 && !UserBuyCourse)
+                    {
+                        <a asp-controller="Course" asp-action="BuyCourse" asp-route-id="@Model.CourseId"> شرکت در دوره : @Model.CoursePrice.ToString("#,0") تومان </a>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <h2 class="text-center">این دوره خریداری شده</h2>
+                        </div>
+                    }
+                </div>
+             
+
+                <article class="teacher-info">
+                    <img src="/UserAvatar/@Model.User.UserAvatar">
+                    <h2> مدرس : @Model.User.UserName </h2>
+                </article>
+
+                <article class="term-info">
+                    <h2> اطلاعات این دوره </h2>
+                    <ul>
+                        <li>سطح دوره: @Model.CourseStatus.StatusTitle</li>
+                        <li>وضعیت دوره: @Model.CourseLevel.LevelTitle</li>
+                        @if (Model.CoursePrice != 0)
+                        {
+                            <li>قیمت : @Model.CoursePrice.ToString("#,0") تومان</li>
+                        }
+                        else
+                        {
+                            <li> <p class="text-success">رایگان</p> </li>
+                        }
+                        <li>تاریخ ثبت این دوره : @Model.CreateDate.ToShamsi()</li>
+                        <li>آخرین بروزرسانی دوره : @Model.UpdateDate?.ToShamsi()</li>
+                    </ul>
+                </article>
+
+                <div class="share-layer">
+                    <span> به اشتراک گذاری </span>
+                    <a href=""><i class="zmdi zmdi-facebook"></i></a>
+                    <a href=""><i class="zmdi zmdi-google-old"></i></a>
+                    <a href=""><i class="zmdi zmdi-twitter"></i></a>
+                    <a href=""><i class="zmdi zmdi-linkedin"></i></a>
+                </div>
+
+                @if (Model.Tags != null)
+                {
+                    <div class="tags-layer">
+                        @foreach (string tag in Model.Tags.Split('-',StringSplitOptions.RemoveEmptyEntries))
+                        {
+                        <a href="/Course?filter=@tag"> @tag </a>
+                        }
+                    </div>
+                }
+
+            </aside>
+        </div>
+    </section>
+</div>
+
+@section Scripts
+{
+    <script src="/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function success() {
+            $("#comment_comment").val("");
+        }
+
+        $(function() {
+            $("#listComment").load("/course/ShowComment/" + @Model.CourseId);
+        });
+
+        function ChangePageId(pageId) {
+            $("#listComment").load("/course/ShowComment/" + @Model.CourseId +"?pageId="+pageId);
+        }
+
+        $(document).ready(function() {
+            $("#vote").load("/course/CourseVote/@Model.CourseId");
+        });
+
+        function AddVote(vote) {
+            $("#vote").fadeOut('slow');
+            $("#vote").load("/course/AddVote/@(Model.CourseId)?vote="+vote);
+            $("#vote").fadeIn('slow');
+        }
+    </script>
+}

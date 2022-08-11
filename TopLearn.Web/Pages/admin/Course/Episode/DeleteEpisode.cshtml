@@ -1,0 +1,55 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.admin.Course.Episode.DeleteEpisodeModel
+@{
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">حذف قسمت</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="CourseEpisode.EpisodeId" />
+        <input type="hidden" asp-for="CourseEpisode.CourseId" />
+
+        <div class="col-md-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    اطلاعات قسمت
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>عنوان قسمت</label>
+                        <input type="text" readonly="readonly" asp-for="CourseEpisode.EpisodeTitle" class="form-control">
+                        <span asp-validation-for="CourseEpisode.EpisodeTitle"></span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>زمان قسمت</label>
+                        <input type="text" readonly="readonly" asp-for="CourseEpisode.EpisodeTime" class="form-control">
+                        <div class="help-block">لطفا زمان را با : جدا کنید</div>
+                        <span asp-validation-for="CourseEpisode.EpisodeTime"></span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" readonly="readonly" asp-for="CourseEpisode.IsFree">رایگان است؟
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="container panel-body">
+                    <input type="submit" value="حذف" st class="btn btn-danger" />
+                    <a href="/Admin/course/episode/@Model.CourseEpisode.CourseId" class="btn btn-info">بازگشت</a>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>

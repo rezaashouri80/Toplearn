@@ -1,0 +1,135 @@
+﻿@using TopLearn.core.Services.Intefaces
+@model TopLearn.Datalayar.Entities.Order.Order
+@inject IUserService _userService
+@{
+    ViewData["Title"] = "فاکتور شما";
+    int SumOrder = Model.OrderSum;
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> فاکتور خرید </li>
+        </ul>
+    </nav>
+</div>
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <partial name="_SideBar" />
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> فاکتور شما </h1></header>
+                        <div class="inner">
+                            @if (ViewBag.finaly)
+                            {
+                                <div class="col-md-8 alert alert-success">
+                                پرداخت شما با موفقیت انجام شد
+                                </div>
+                            }
+                            @switch (ViewBag.type)
+                            {
+                                case "Success":
+                                {
+                                    <div class="col-md-4 alert alert-success">
+                                        کد تخفیف با موفقیت اعمال شد
+                                    </div>
+                                        break;
+                                    }
+
+                                case "ExpiredDate":
+                                {
+                                    <div class="col-md-4 alert alert-warning">
+                                        زمان کد تخفیف تمام شده است
+                                    </div>
+                                    break;
+                                }
+
+                                case "NotFound":
+                                {
+                                    <div class="col-md-4 alert alert-danger">
+                                        کد تخفیف نامعتبر میباشد
+                                    </div>
+                                        break;
+                                    }
+
+                                case "Same":
+                                {
+                                    <div class="col-md-4 alert alert-danger">
+                                        کد تخفیف تکراری است
+                                    </div>
+                                    break;
+                                }
+                            }
+                            <table class="table table-responsive table-bordered ">
+                                <thead >
+                                <tr>
+                                    <th>دوره</th>
+                                    <th>قیمت</th>
+                                    <th>تعداد</th>
+                                    <th>جمع</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model.OrderDetails)
+                            {
+                                    <tr>
+                                        <td><a target="_blank" href="/showcourse/@item.CourseId">@item.Course.CourseTitle</a></td>
+                                        <td>@item.Price</td>
+                                        <td>@item.Count</td>
+
+                                        <td>@((item.Price * item.Count).ToString("#,0 تومان"))</td>
+                                    </tr>
+                                }
+                            @if (!Model.IsFinally)
+                            {
+                                <tr>
+                                    @if (ViewBag.type == "Success")
+                                    {
+                                        <td colspan="2">میزان تخفیف :</td>
+                                        <td colspan="2">@((Model.OrderDetails.Sum(od=>od.Price * od.Count)-Model.OrderSum).ToString("#,0 تومان"))</td>
+                                    }
+                                    else
+                                    {
+                                        <td colspan="2">کد تخفیف :</td>
+                                        <form action="/userpanel/order/UseDiscount/" method="post">
+                                            <td>
+                                                <input type="hidden" value="@Model.OredrId" name="orderId" />
+                                                <input type="text" name="code" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="submit" class="btn btn-info" value="اعمال" />
+                                            </td>
+                                        </form>
+                                    }
+                                </tr>
+                              }
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-4">جمع کل : @SumOrder.ToString("#,0 تومان") </div>
+                           @if (!Model.IsFinally)
+                           {
+                               <div class="col-md-8">
+                                   @if (_userService.BalanceUserWallet(User.Identity.Name) >= SumOrder)
+                                   {
+                                       <a href="/userpanel/order/finalyOrder/@Model.OredrId" class="btn-success btn"> پرداخت از کیف پول</a>
+                                   }
+                                   else
+                                   {
+                                       <a disabled="" class="btn btn-success">پرداخت از کیف پول</a>
+                                       <div class="alert alert-danger">موجودی کیف پول شما کافی نیست , از طریق این <a href="/userpanel/wallet">لینک</a> اقدام به شارژ ان بفرمایید</div>
+                                   }
+                               </div>
+                           }
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,36 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.Admin.Users.DeleteUserModel
+@{
+}
+<div class="container">
+    <div class="col-md-12">
+        <form method="post">
+            <div class="panel panel-default">
+                <input type="hidden" name="Id" value="@ViewData["UserId"].ToString()"/>
+                <div class="panel-heading">
+                    مشخصات کاربر
+                </div>
+                <div class="panel-body">
+                    <dl>
+                        <dt>نام کاربری :</dt>
+                        <dd>@Model.InformationUserViewModel.Username</dd>
+
+                        <dt>نام کاربری :</dt>
+                        <dd>@Model.InformationUserViewModel.Email</dd>
+
+                        <dt>موجودی حساب :</dt>
+                        <dd>@Model.InformationUserViewModel.Wallet</dd>
+
+
+                        <dt>تاریخ ثبت نام :</dt>
+                        <dd>@Model.InformationUserViewModel.Registerdate</dd>
+                    </dl>
+
+                </div>
+                <input type="submit" value="حذف" class="btn btn-danger"/>
+                <!-- /.panel-body -->
+            </div>
+        </form>
+        <!-- /.panel -->
+    </div>
+</div>

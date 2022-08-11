@@ -1,0 +1,37 @@
+﻿@using TopLearn.core.Convertor
+@using TopLearn.core.DTOs
+@using TopLearn.core.Services.Intefaces
+@inject IUserService _userservice
+@{
+    SideBarUserPanelViewModel user = _userservice.GetSideBarUserPanelData(User.Identity.Name);
+}
+<div class="col-md-3 col-sm-4 col-xs-12">
+    <aside>
+
+        <div class="avatar-layer">
+            <div class="img-layer">
+                <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                <img src="/UserAvatar/@user.Imagename">
+            </div>
+            <div class="detail">
+                <span>  @user.Username </span>
+                <span> عضویت : @user.RegisterDate.ToShamsi() </span>
+            </div>
+        </div>
+
+        <section>
+            <header><h3> میز کار </h3></header>
+            <div class="inner">
+                <ul>
+                    <li><a href="/userpanel"> مشاهده حساب کابری </a></li>
+                    <li><a href="/userpanel/home/editprofile"> ویرایش حساب کابری </a></li>
+                    <li><a href="/userpanel/home/changepassword"> تغییر رمز عبور </a></li>
+                    <li><a href=""> تنظیمات حساب کاربری </a></li>
+                    <li><a href="/userpanel/wallet"> کیف پول </a></li>
+                    <li><a href="/userpanel/order"> تاریخچه فاکتور ها </a></li>
+                    <li><a href="/logout"> خروج از حساب کاربری </a></li>
+                </ul>
+            </div>
+        </section>
+    </aside>
+</div>

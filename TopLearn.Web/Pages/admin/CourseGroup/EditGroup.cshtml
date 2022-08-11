@@ -1,0 +1,71 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.admin.CourseGroup.EditGroupModel
+@{
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن گروه جدید</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+
+    <div class="col-md-8">
+        <form method="post" enctype="multipart/form-data">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    گروه جدید
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" asp-for="GroupCourse.GroupId" value="@Model.GroupCourse.GroupId" />
+                    <input type="hidden" asp-for="GroupCourse.SubGroup" value="@Model.GroupCourse.SubGroup" />
+
+                    <div class="form-group">
+                        <label>عنوان گروه</label>
+                        <input type="text" asp-for="GroupCourse.GroupTitle" class="form-control">
+                        <input type="hidden" asp-for="GroupCourse.ParentId" />
+                    </div>
+
+
+                    <input type="submit" value="ثبت گروه" class="btn btn-success" />
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                زیر گروه ها
+            </div>
+            <div style="padding: 15px" class="container col-md-7 ">
+                <a href="/Admin/courseGroup/CreateGroup/@Model.GroupCourse.GroupId" style="padding: 15px" class="btn btn-warning btn-block btn-sm">افزودن زیر گروه</a>
+
+            </div>
+           @if (Model.GroupCourse.GroupCourses.Any())
+           {
+               <div class="panel-body">
+                   <table class="table table-bordered">
+                       <thead> <tr>
+                           <th>عنوان زیر گروه</th>
+                           <th>دستورات</th>
+                       </tr>
+                       </thead>
+                       <tbody>
+                       @foreach (var sub in Model.GroupCourse.GroupCourses)
+                       {
+                           <tr>
+                               <td>@sub.GroupTitle</td>
+                               <td><a href="/Admin/CourseGroup/EditGroup/@sub.GroupId" class="btn btn-info">ویرایش</a></td>
+                           </tr>
+                       }
+                       </tbody>
+                   </table>
+               </div>
+           }
+        </div>
+    </div>
+</div>

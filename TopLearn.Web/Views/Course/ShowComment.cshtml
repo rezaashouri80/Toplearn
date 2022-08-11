@@ -1,0 +1,56 @@
+﻿@using TopLearn.core.Convertor
+@model Tuple<List<TopLearn.Datalayar.Entities.Course.CourseComments>, int>
+
+@{
+    Layout = null;
+    int courseId = Model.Item1.First().CourseId;
+   // int pageId = ViewBag.pageId;
+}
+
+@foreach (var comment in Model.Item1)
+{
+    
+    <div class="comment-row">
+    
+        <img src="/useravatar/@comment.User.UserAvatar">
+
+        <div>
+        
+            <h3> @comment.User.UserName</h3>
+            <span>@comment.DateTime.ToShamsi()</span>
+            <p>
+                @comment.Comment
+            </p>
+        </div>
+
+    </div>
+  
+   
+}
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+         @*@if (pageId > 1)
+         {
+             <li class="page-item">
+                 <a class="page-link" onclick="ChangePageId(@(pageId-1))" aria-label="Previous">
+                     <span aria-hidden="true"><i class="zmdi zmdi-chevron-right"></i></span>
+                 </a>
+             </li>
+         }*@
+        @for (int i = 1; i <= Model.Item2; i++)
+        {
+            <li class="page-item"><a class="page-link" onclick="ChangePageId(@i)">@i</a></li>
+        }
+
+          @*@if (pageId < Model.Item2)
+          {
+              <li class="page-item">
+                  <a class="page-link" onclick="ChangePageId(@(pageId+1))" aria-label="Next">
+                      <span aria-hidden="true"><i class="zmdi zmdi-chevron-left"></i></span>
+                  </a>
+              </li>
+          }*@
+        </ul>
+    </nav>
+

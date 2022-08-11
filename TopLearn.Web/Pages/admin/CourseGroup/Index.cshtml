@@ -1,0 +1,72 @@
+﻿@page
+@model TopLearn.Web.Pages.admin.CourseGroups.IndexModel
+@{
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست گروه ها</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                DataTables Advanced Tables
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+
+
+                        <a href="/Admin/CourseGroup/CreateGroup" style="margin: 10px" class="btn btn-info">افزودن نقش جدید</a>
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th>عنوان گروه</th>
+                                    <th>زیر گروه ها</th>
+                                    <th>دستورات</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var group in Model.GroupCourses.Where(g=>g.ParentId==null))
+                                {
+                                <tr>
+                                    <td>@group.GroupTitle</td>
+
+                                    <td>
+                                        @if (group.GroupCourses.Any())
+                                        {
+                                            <ul>
+                                                @foreach (var sub in group.GroupCourses)
+                                                {
+                                                    <li>@sub.GroupTitle</li>
+                                                }
+                                            </ul>
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        <a href="/admin/CourseGroup/EditGroup/@group.GroupId" class="btn btn-sm btn-success">ویرایش</a>
+
+                                    </td>
+
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- /.table-responsive -->
+
+                    </div>
+                </div><!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

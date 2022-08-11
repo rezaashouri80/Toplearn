@@ -1,0 +1,91 @@
+﻿@page "{handler?}"
+@model TopLearn.Web.Pages.admin.Discount.CreateDiscountModel
+@{
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن کد جدید</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    کد تخفیف جدید
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label > کد تخفیف</label>
+                        <input type="text" id="discount_code" asp-for="Discount.DiscountCode" class="form-control">
+                        <span asp-validation-for="Discount.DiscountCode"></span>
+                        <div id="alertcode" class="alert alert-danger" style="display: none">
+                            <p class="text-muted">کد تخفیف تکراری است</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label> درصد تخفیف</label>
+                        <input type="number" min="0" max="100" asp-for="Discount.DiscountPercent" class="form-control">
+
+                    </div>
+                    <div class="form-group">
+                        <label> تعداد کد تخفیف</label>
+                        <input type="number" asp-for="Discount.UsableCount" class="form-control">
+                       
+                    </div>
+                    <div class="form-group">
+                        <label> تاریخ شروع</label>
+                        <input id="stDate" name="stDate"  >
+                       
+                    </div>
+
+                    <div class="form-group">
+                        <label>تاریخ پایان</label>
+                        <input id="edDate" name="edDate">
+                       
+                    </div>
+                    <input type="submit" id="submit" value="ثبت کد" class="btn btn-success" />
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <script>
+        $("#discount_code").blur(function() {
+            $.ajax({
+                type: "get",
+                url: "/Admin/Discount/CreateDiscount/CheckCode?code=" + $("#discount_code").val()
+            }).done(function(res) {
+                if (res === 'True') {
+                    $("#alertcode").show();
+                }
+                else {
+                    $("#alertcode").hide();
+                }
+            });
+        })
+    </script>
+
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.default.min.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="/js/kendo.all.min.js"></script>
+
+    <script>
+       
+                
+        // create DatePicker from input HTML element
+        $("#stDate").kendoDatePicker();
+        $("#edDate").kendoDatePicker();
+
+       
+    </script>
+}

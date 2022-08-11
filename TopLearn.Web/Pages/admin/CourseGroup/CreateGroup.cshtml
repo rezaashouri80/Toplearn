@@ -1,0 +1,34 @@
+﻿@page "{id?}"
+@model TopLearn.Web.Pages.admin.CourseGroup.CreateGroupModel
+@{
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن گروه جدید</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-md-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    گروه جدید
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>عنوان گروه</label>
+                        <input type="text" asp-for="GroupCourse.GroupTitle" class="form-control">
+                        <input type="hidden" asp-for="GroupCourse.ParentId"/>
+                    </div>
+
+
+                    <input type="submit" value="ثبت گروه" class="btn btn-success" />
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

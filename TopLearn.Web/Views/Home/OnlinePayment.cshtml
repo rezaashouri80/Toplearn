@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "نتیجه پرداخت";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> نتیجه پرداخت </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container">
+    @if (ViewBag.IsSuccess == true)
+    {
+        <div class=" alert alert-success">
+            پرداخت شما با موفقیت انجام شد
+            کد پیگیری :@ViewBag.code
+        </div>
+    }
+    else
+    {
+        <div class=" alert alert-danger">
+            پرداخت شما با شکست مواجه شد
+        </div>
+    }
+</div>
+

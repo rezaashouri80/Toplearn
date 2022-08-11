@@ -1,0 +1,68 @@
+﻿@model TopLearn.core.DTOs.EditProfileViewModel
+@{
+    ViewData["Title"] = "ویرایش پروفایل";
+}
+
+
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> ویرایش پروفایل </li>
+        </ul>
+    </nav>
+</div>
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <partial name="_SideBar" />
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> ویرایش حساب کاربری </h1></header>
+                        <div class="inner form-layer">
+                            <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                                @if (ViewBag.IsSuccess != null)
+                                {
+                                    <div class="alert alert-success">
+                                        اطلاعات کاربری شما با موفقیت ویرایش شد
+                                    </div>
+                                }
+
+                                <input type="hidden" asp-for="ImageName" />
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                            <input type="text" class="form-control" asp-for="UserName" placeholder="نام کاربری" aria-describedby="username">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                                            <input type="text" class="form-control" asp-for="Email" placeholder="ایمیل" aria-describedby="email-address">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <p class="help-block">
+                                            آواتار
+                                        </p>
+                                        <input type="file" asp-for="Avatar" />
+                                        <p>لطفا فقط تصویر انتخاب کنید</p>
+                                        <img class="thumbnail" src="/UserAvatar/@Model.ImageName" style="max-width: 150px" />
+                                    </div>
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <button class="btn btn-success"> ویرایش اطلاعات </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

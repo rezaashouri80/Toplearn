@@ -1,0 +1,98 @@
+﻿@page
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model TopLearn.Web.Pages.Admin.Users.IndexModel
+@{
+
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست کاربران</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row">
+                            <form>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control " name="FilterUserName" placeholder="نام کاربری" />
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control " name="FilterEmail" placeholder="ایمیل" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-sm btn-info" type="submit">جست و جو</button>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <a class="btn btn-sm btn-warning" href="/Admin/users">جدید</a>
+                                </div>
+                            </form>
+                        </div>
+                        <a href="/Admin/users/CreateUser" style="margin: 10px" class="btn btn-success">افزودن کاربر جدبد</a>
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                            <thead>
+                            <tr>
+                                <th>نام کاربری</th>
+                                <th>ایمیل</th>
+                                <th>وضعیت</th>
+                                <th>تاریخ ثبت نام</th>
+                                <th>دستورات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var user in Model.Users.Users)
+                            {
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <p class="text-success">فعال</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">غیر فعال</p>
+                                        }
+                                    </td>
+                                    <td>@user.rigesterDate</td>
+                                    <td>
+                                        <a href="/Admin/users/edituser/@user.UserId" class="btn btn-sm btn-success">ویرایش</a>
+                                        <a href="/Admin/users/deleteuser/@user.UserId" class="btn btn-sm btn-danger">حذف</a>
+
+                                    </td>
+
+                                </tr>
+                            }
+                            </tbody>
+                        </table><div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                                <ul class="pagination">
+                                    @for (int i = 1; i <= Model.Users.PageCount; i++)
+                                    {
+                                        <li class="paginate_button @((Model.Users.CurrentPage==i)?"active":"")"></li>
+                                        <a href="Admin/users?pageId=@i">@i</a>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.table-responsive -->
+                
+                    </div>
+                </div><!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

@@ -1,0 +1,97 @@
+﻿@page "{id}"
+@using TopLearn.Datalayar.Entities.User
+@model TopLearn.Web.Pages.Admin.Users.EditUserModel
+@{
+
+    List<Role> roles = ViewData["Roles"] as List<Role>;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن کاربر جدید</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-md-8">
+            <div class="panel panel-info">
+                <input type="hidden" asp-for="EditUser.UserId" />
+                <input type="hidden" asp-for="EditUser.ImageName" />
+                <div class="panel-heading">
+                    مشخصات کاربر
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>نام کاربری</label>
+                        <input type="text" readonly="readonly" asp-for="EditUser.UserName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>ایمیل</label>
+                        <input type="email" asp-for="EditUser.Email" class="form-control">
+                        <span asp-validation-for="EditUser.Email"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>کلمه عبور</label>
+                        <input type="text" asp-for="EditUser.Password" class="form-control">
+                        <p class="help-block">درر صورت وارد کردن کلمه عبور , کلمه عبور تغییر خواهد کرد</p>
+                        <span asp-validation-for="EditUser.Password"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>نقش کاربر</label>
+                        @foreach (var item in roles)
+                        {
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="UserRoles" @((Model.EditUser.UseerRoles.Any(r => r == item.RoleId) ? "checked" : "")) value="@item.RoleId">@item.RoleTittle
+                                </label>
+                            </div>
+                        }
+                    </div>
+
+                    <input type="submit" value="ویرایش کاربر" class="btn btn-success" />
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    تصویر پروفایل
+                </div>
+                <div class="panel-body">
+                    <img id="imgAvatar" class="thumbnail" src="/UserAvatar/@Model.EditUser.ImageName" />
+                    <div class="form-group">
+                        <label>اتخاب تصویر</label>
+                        <input asp-for="EditUser.Avatar" id="Selectedimg" type="file">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </form>
+</div>
+@section Scripts
+{
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#imgAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        $("#Selectedimg").change(function() {
+            readURL(this);
+        });
+    </script>
+}

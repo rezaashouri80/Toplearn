@@ -1,0 +1,73 @@
+﻿@page "{id}"
+@using TopLearn.core.Convertor
+@model TopLearn.Web.Pages.admin.Discount.EditDiscountModel
+@{
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">ویرایش کد </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <div class="col-md-8">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    ویرایش کد تخفیف
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label> کد تخفیف</label>
+                        <input type="text" asp-for="Discount.DiscountCode" class="form-control">
+                        <input type="hidden" asp-for="Discount.DiscountId"/>
+                    </div>
+                    <div class="form-group">
+                        <label> درصد تخفیف</label>
+                        <input type="number" min="0" max="100" asp-for="Discount.DiscountPercent" class="form-control">
+
+                    </div>
+                    <div class="form-group">
+                        <label> تعداد کد تخفیف</label>
+                        <input type="number" asp-for="Discount.UsableCount" class="form-control">
+
+                    </div>
+                    <div class="form-group">
+                        <label> تاریخ شروع</label>
+                        <input id="stDate" value="@((Model.Discount.StartDate != null)?Model.Discount.StartDate.Value.ToShamsi():"")" name="stDate">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>تاریخ پایان</label>
+                        <input id="edDate" value="@((Model.Discount.EndDate != null)?Model.Discount.EndDate.Value.ToShamsi():"")" name="edDate">
+
+                    </div>
+                    <input type="submit" value="ثبت کد" class="btn btn-success" />
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.default.min.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="/js/kendo.all.min.js"></script>
+
+    <script>
+
+
+            // create DatePicker from input HTML element
+        $("#stDate").kendoDatePicker();
+        $("#edDate").kendoDatePicker();
+
+
+    </script>
+}
